@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 320 220" width="320" height="220" xmlns="http://www.w3.org/2000/svg">
+            <!-- Background Soft Elements -->
+            <circle cx="160" cy="110" r="90" fill="#e2ede7" />
+            
+            <!-- Faded Wallet Background Element -->
+            <g opacity="0.35" transform="translate(180, 50) rotate(12)">
+              <rect x="0" y="0" width="100" height="70" rx="10" fill="#a3b8ad" stroke="#688274" stroke-width="2"/>
+              <rect x="0" y="15" width="100" height="12" fill="#688274" />
+              <rect x="10" y="38" width="30" height="20" rx="4" fill="#d1ded7" />
+              <!-- Outgoing NFC signals from wallet crossing out -->
+              <circle cx="50" cy="35" r="15" stroke="#849b8e" stroke-width="2" fill="none" stroke-dasharray="3 3"/>
+            </g>
+
+            <!-- Wireless Payment Waves -->
+            <g stroke="#134e35" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0.7">
+              <path d="M 215 50 A 25 25 0 0 1 215 85" />
+              <path d="M 225 43 A 35 35 0 0 1 225 92" />
+              <path d="M 235 36 A 45 45 0 0 1 235 99" />
+            </g>
+
+            <!-- Smartphone Frame & Screen -->
+            <g transform="translate(75, 20) rotate(-6)">
+              <!-- Phone Shell -->
+              <rect x="0" y="0" width="110" height="190" rx="18" fill="#1e293b" />
+              <rect x="3" y="3" width="104" height="184" rx="15" fill="#0f172a" />
+              <!-- Screen Display -->
+              <rect x="6" y="12" width="98" height="166" rx="10" fill="#ffffff" />
+              
+              <!-- App Bar -->
+              <rect x="14" y="22" width="45" height="10" rx="3" fill="#134e35" />
+              <text x="18" y="30" font-family="'Plus Jakarta Sans', system-ui, -apple-system, sans-serif" font-size="7" font-weight="bold" fill="#ffffff">Boosog</text>
+
+              <!-- Main Balance Card inside App -->
+              <rect x="12" y="38" width="86" height="52" rx="8" fill="#134e35" />
+              <text x="20" y="52" font-family="'Plus Jakarta Sans', system-ui, -apple-system, sans-serif" font-size="6" fill="#a3cfbb">MEAL ALLOWANCE</text>
+              <text x="20" y="66" font-family="'Plus Jakarta Sans', system-ui, -apple-system, sans-serif" font-size="12" font-weight="bold" fill="#ffffff">₱ 4,500.00</text>
+              <rect x="20" y="74" width="40" height="4" rx="2" fill="#2c8560" />
+
+              <!-- Transaction Success Badge -->
+              <g transform="translate(14, 100)">
+                <rect x="0" y="0" width="82" height="34" rx="6" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1" />
+                <circle cx="16" cy="17" r="9" fill="#134e35" />
+                <!-- Checkmark -->
+                <path d="M12 17 L15 20 L20 14" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+                <text x="30" y="15" font-family="'Plus Jakarta Sans', system-ui, -apple-system, sans-serif" font-size="7" font-weight="bold" fill="#14532d">Payment Sent</text>
+                <text x="30" y="24" font-family="'Plus Jakarta Sans', system-ui, -apple-system, sans-serif" font-size="5" fill="#166534">Just now • Green Cafe</text>
+              </g>
+
+              <!-- Recent Activity List Mockup -->
+              <rect x="14" y="142" width="82" height="6" rx="3" fill="#e2e8f0" />
+              <rect x="14" y="153" width="55" height="6" rx="3" fill="#f1f5f9" />
+            </g>
+
+            <!-- Hand Holding Phone (Stylized Vector) -->
+            <path d="M 40 180 C 50 140, 75 130, 85 135 C 92 138, 95 148, 88 160 C 82 170, 70 210, 70 220 L 20 220 Z" fill="#e5c3b2" />
+            <path d="M 82 130 C 95 125, 112 140, 105 155 C 100 162, 85 170, 75 185" fill="none" stroke="#d4a38e" stroke-width="3" stroke-linecap="round" />
+          </svg>

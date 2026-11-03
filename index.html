@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Boosog — meal benefits</title>
 <script src="./vendor/react.js"></script>
 <script src="./vendor/react-dom.js"></script>
@@ -13,75 +14,275 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500;1,600&amp;display=swap" rel="stylesheet">
 <style>
+/* Mobile first: base styles target phones, min-width queries scale up. */
+*,*::before,*::after{box-sizing:border-box}
 body{margin:0;background:#FFFFFF}
+img{max-width:100%}
 a{color:#1A6B55}a:hover{color:#10241D}
 summary{cursor:pointer;list-style:none}
 summary::-webkit-details-marker{display:none}
+
+.page{font-family:'Plus Jakarta Sans',system-ui,sans-serif;color:#10241D;background:#FFFFFF;min-height:100vh;overflow-x:clip}
+.wrap{max-width:1200px;margin:0 auto}
+.sec{padding:64px 16px}
+.stack{display:flex;flex-direction:column;gap:32px}
+.head{display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px}
+.h2{margin:0;font-size:clamp(30px,7.5vw,48px);line-height:1.1;font-weight:800;letter-spacing:-1px}
+.h3{margin:0;font-size:clamp(26px,6.5vw,32px);line-height:1.15;font-weight:800}
+.lead{margin:0;font-size:17px;line-height:1.55;color:#4A5D56;max-width:600px}
+.muted{color:#4A5D56}
+.acc{font-style:italic;font-weight:600;color:#1A6B55}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:15px 24px;border-radius:999px;font-weight:700;font-size:16px;text-decoration:none;text-align:center}
+.btn-dark{background:#10241D;color:#FFFFFF}.btn-dark:hover{color:#FFFFFF;background:#1A6B55}
+.btn-light{background:#FFFFFF;color:#10241D}.btn-light:hover{color:#10241D;background:#F6FAF8}
+.btn-mint{background:#E8F5EF;color:#10241D}
+.btn-green{background:#1A6B55;color:#FFFFFF}.btn-green:hover{color:#FFFFFF;background:#10241D}
+.btns{display:flex;flex-direction:column;gap:12px}
+.btn-solo{align-self:stretch}
+
+/* nav */
+.nav{max-width:1200px;margin:0 auto;min-height:64px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.logo{color:#10241D;text-decoration:none;font-size:26px;font-weight:800;letter-spacing:-0.5px}
+.nav-links{display:none}
+.nav-right{display:flex;align-items:center;gap:8px}
+.nav-login{display:none}
+.nav-demo{background:#FFFFFF;color:#10241D;text-decoration:none;font-weight:700;font-size:14px;padding:10px 16px;border-radius:999px;min-height:44px;display:inline-flex;align-items:center}
+.menu-btn{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border:0;border-radius:999px;background:rgba(255,255,255,0.35);color:#10241D;cursor:pointer}
+.mobile-menu{max-width:1200px;margin:0 auto;display:flex;flex-direction:column;padding:4px 0 12px;border-top:1px solid rgba(16,36,29,0.15)}
+.mobile-menu a{color:#10241D;text-decoration:none;font-size:17px;font-weight:600;min-height:48px;display:flex;align-items:center}
+
+/* hero */
+.hero{padding:24px 16px 64px}
+.hero-grid{max-width:1200px;margin:0 auto;display:flex;flex-direction:column;gap:40px}
+.pill{margin:0 0 16px;display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.45);padding:8px 14px;border-radius:999px;font-size:13px;font-weight:600}
+.h1{margin:0 0 16px;font-size:clamp(38px,10.5vw,68px);line-height:1.04;font-weight:800;letter-spacing:-1.5px}
+.hero-sub{margin:0 0 28px;font-size:17px;line-height:1.55;max-width:520px}
+.checks{margin-top:20px;display:flex;flex-wrap:wrap;gap:8px 18px;font-size:14px;font-weight:600}
+.checks span{display:inline-flex;align-items:center;gap:6px}
+
+/* phone mockups */
+.phone-stage{display:flex;justify-content:center}
+.phone-box{position:relative}
+.phone{width:260px;height:520px;background:#FFFFFF;border:9px solid #10241D;border-radius:40px;padding:22px 16px;display:flex;flex-direction:column;gap:12px;box-shadow:0 30px 60px rgba(16,36,29,0.28)}
+.phone-sm{width:250px;height:500px;padding:20px 14px;box-shadow:0 30px 60px rgba(16,36,29,0.18)}
+.bal{background:#10241D;color:#FFFFFF;border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:4px}
+.bal-amt{font-size:28px;font-weight:800;letter-spacing:-0.5px}
+.scan{color:#10241D;border-radius:14px;padding:14px;display:flex;align-items:center;justify-content:center;gap:10px;font-weight:700;font-size:15px}
+.row{display:flex;justify-content:space-between;font-size:14px;padding-bottom:10px;border-bottom:1px solid #E3EEE9}
+.row:last-child{border-bottom:0;padding-bottom:0}
+.toast{position:absolute;left:-12px;bottom:48px;background:#FFFFFF;border-radius:16px;padding:12px 14px;display:flex;align-items:center;gap:10px;box-shadow:0 16px 40px rgba(16,36,29,0.22)}
+
+/* cards and grids */
+.grid3{display:grid;grid-template-columns:1fr;gap:20px}
+.card{border:1px solid #E3EEE9;border-radius:24px;overflow:hidden;display:flex;flex-direction:column;background:#FFFFFF}
+.card-art{background:#F0F4F2;aspect-ratio:16/11;padding:20px 24px;border-bottom:1px solid #EEF2F0}
+.card-art img{display:block;width:100%;height:100%;object-fit:contain}
+.card-body{padding:22px;display:flex;flex-direction:column;gap:10px}
+.card-title{margin:0;font-size:21px;line-height:1.25;font-weight:800}
+.card p,.step p{margin:0;font-size:16px;line-height:1.55;color:#4A5D56}
+.step{background:#FFFFFF;border:1px solid #E3EEE9;border-radius:24px;padding:24px;display:flex;flex-direction:column;gap:12px}
+.step h3{margin:0;font-size:21px;font-weight:800}
+.num{width:44px;height:44px;border-radius:50%;color:#10241D;font-size:19px;font-weight:800;display:flex;align-items:center;justify-content:center}
+.stat{background:#F6FAF8;border-radius:20px;padding:20px;display:flex;flex-direction:column;gap:4px;text-align:center}
+.stat b{font-size:36px;font-weight:800;letter-spacing:-1px;color:#1A6B55}
+
+/* audiences */
+.tabs{align-self:stretch;display:grid;grid-template-columns:repeat(3,1fr);gap:4px;background:#E8F5EF;padding:5px;border-radius:999px}
+.tab{border:0;cursor:pointer;font-family:inherit;font-size:14px;font-weight:700;padding:10px 6px;min-height:44px;border-radius:999px}
+.split{display:flex;flex-direction:column;gap:32px}
+.split>*{min-width:0}
+.col{display:flex;flex-direction:column;gap:22px;justify-content:center}
+.feats{display:flex;flex-direction:column;gap:18px}
+.feat{display:flex;gap:14px}
+.feat-txt{display:flex;flex-direction:column;gap:4px}
+.feat-txt strong{font-size:17px}
+.feat-txt span{font-size:16px;line-height:1.5;color:#4A5D56}
+.ico{flex:none;width:40px;height:40px;border-radius:12px;background:#E8F5EF;color:#1A6B55;display:flex;align-items:center;justify-content:center}
+.panel{background:#E8F5EF;border-radius:24px;padding:20px;display:flex;flex-direction:column;gap:14px;justify-content:center}
+.panel-inner{background:#FFFFFF;border-radius:18px;padding:20px;display:flex;flex-direction:column;gap:12px}
+.panel-cta{background:#10241D;color:#FFFFFF;border-radius:14px;padding:15px;text-align:center;font-weight:700}
+
+/* spend your way */
+.spend{display:flex;flex-direction:column;gap:32px;align-items:center}
+.spend-col{display:flex;flex-direction:column;gap:28px;width:100%}
+.spend-item{display:flex;flex-direction:column;gap:6px}
+.spend-item strong{font-size:19px}
+.spend-item span{font-size:16px;line-height:1.55;color:#4A5D56}
+.spend-phone{order:-1}
+.place{display:flex;justify-content:space-between;align-items:center;font-size:14px;padding:12px;border-radius:12px;background:#F6FAF8}
+.place small{display:block;font-size:12px;color:#4A5D56}
+
+/* restaurants band */
+.band{background:#10241D;color:#FFFFFF}
+.dash{background:#FFFFFF;color:#10241D;border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:14px}
+.kpis{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.kpi{border:1px solid #E3EEE9;border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:2px}
+.kpi b{font-size:22px;font-weight:800}
+.kpi span{font-size:12px;color:#4A5D56}
+.table-wrap{overflow-x:auto;border:1px solid #E3EEE9;border-radius:14px}
+.table-wrap table{width:100%;border-collapse:collapse;font-size:14px;min-width:340px}
+.table-wrap th,.table-wrap td{padding:12px}
+.badge{background:#E8F5EF;color:#1A6B55;padding:3px 9px;border-radius:999px;font-size:13px;font-weight:600}
+
+/* support trio */
+.trio{display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px}
+.trio-ico{width:60px;height:60px;border-radius:18px;background:#E8F5EF;color:#1A6B55;display:flex;align-items:center;justify-content:center}
+
+/* faq */
+.faq{border:1px solid #E3EEE9;border-radius:18px;padding:18px 20px}
+.faq summary{font-size:17px;font-weight:700;display:flex;justify-content:space-between;align-items:center;gap:16px}
+.faq summary::after{content:"+";flex:none;font-size:24px;font-weight:500;color:#1A6B55;line-height:1}
+.faq[open] summary::after{content:"−"}
+.faq p{margin:12px 0 0;font-size:16px;line-height:1.6;color:#4A5D56}
+
+/* final cta */
+.cta-sec{padding:0 16px 64px}
+.cta-box{max-width:1200px;margin:0 auto;border-radius:24px;padding:48px 20px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:18px}
+
+/* footer */
+.footer{background:#F6FAF8;padding:48px 16px 28px}
+.foot-top{display:flex;flex-direction:column;gap:32px}
+.foot-cols{display:grid;grid-template-columns:1fr 1fr;gap:28px;font-size:15px}
+.foot-cols div{display:flex;flex-direction:column;gap:12px}
+.foot-bottom{display:flex;flex-direction:column;gap:12px;padding-top:24px;border-top:1px solid #E3EEE9;font-size:14px;color:#4A5D56}
+
+@media (min-width:400px){
+  .toast{left:-36px}
+}
+@media (min-width:640px){
+  .sec{padding:96px 24px}
+  .stack{gap:44px}
+  .lead{font-size:18px}
+  .hero{padding:40px 24px 96px}
+  .pill{font-size:14px;margin-bottom:20px}
+  .h1{margin-bottom:20px}
+  .hero-sub{font-size:19px;margin-bottom:32px}
+  .btns{flex-direction:row;flex-wrap:wrap}
+  .btns.center{justify-content:center}
+  .btn{padding:16px 26px}
+  .btn-solo{align-self:flex-start}
+  .phone{width:300px;height:600px;border-width:10px;border-radius:44px;padding:28px 20px;gap:16px}
+  .phone-sm{width:270px;height:540px;padding:24px 18px;gap:14px}
+  .bal{padding:20px;border-radius:20px}
+  .bal-amt{font-size:32px}
+  .toast{left:-110px;bottom:72px;padding:14px 18px;border-radius:18px}
+  .tabs{align-self:center;display:flex;gap:8px;padding:6px}
+  .tab{font-size:15px;padding:12px 22px}
+  .card-art{padding:28px 32px}
+  .card-body{padding:28px}
+  .step{padding:32px}
+  .panel{padding:32px;border-radius:28px}
+  .dash{padding:24px;border-radius:24px}
+  .kpi{padding:16px}
+  .kpi b{font-size:26px}
+  .faq{padding:20px 24px}
+  .faq summary{font-size:18px}
+  .cta-sec{padding:0 24px 96px}
+  .cta-box{padding:64px 32px;border-radius:32px}
+  .footer{padding:64px 24px 32px}
+  .foot-cols{display:flex;gap:48px;font-size:14px}
+  .foot-bottom{flex-direction:row;justify-content:space-between}
+}
+@media (min-width:800px){
+  .grid3{grid-template-columns:repeat(3,1fr);gap:24px}
+}
+@media (min-width:960px){
+  .nav{min-height:76px}
+  .logo{font-size:30px}
+  .nav-links{display:flex;align-items:center;gap:28px;font-size:15px;font-weight:500}
+  .nav-links a{color:#10241D;text-decoration:none}
+  .nav-login{display:inline-flex;align-items:center;min-height:44px;padding:12px 16px;color:#10241D;text-decoration:none;font-weight:600;font-size:15px}
+  .nav-demo{font-size:15px;padding:12px 20px}
+  .menu-btn,.mobile-menu{display:none}
+  .hero-grid{flex-direction:row;align-items:center;gap:56px}
+  .hero-grid>*{flex:1 1 0;min-width:0}
+  .hero-grid>:first-child{flex-grow:1.4}
+  .split{flex-direction:row;align-items:stretch;gap:24px}
+  .split>*{flex:1 1 0}
+  .split.center{align-items:center;gap:56px}
+  .spend{flex-direction:row;gap:40px}
+  .spend-col{flex:1 1 0;gap:40px}
+  .spend-phone{order:0;flex:none}
+  .foot-top{flex-direction:row;justify-content:space-between}
+}
 </style>
 </helmet>
-<div style="font-family: 'Plus Jakarta Sans', system-ui, sans-serif; color: #10241D; background: #FFFFFF; min-height: 100vh">
+<div class="page">
 
 <!-- NAV -->
-<header style="background: {{brand}}; padding: 0 24px">
-<nav aria-label="Main" style="max-width: 1200px; margin: 0 auto; min-height: 76px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px">
-<a href="#top" style="color: #10241D; text-decoration: none; font-size: 30px; font-weight: 800; letter-spacing: -0.5px">boosog</a>
-<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 28px; font-size: 15px; font-weight: 500">
-<a href="#audiences" style="color: #10241D; text-decoration: none">Employers</a>
-<a href="#audiences" style="color: #10241D; text-decoration: none">Employees</a>
-<a href="#restaurants" style="color: #10241D; text-decoration: none">Restaurants</a>
-<a href="#faq" style="color: #10241D; text-decoration: none">FAQ</a>
+<header style="background: {{brand}}; padding: 0 16px">
+<nav aria-label="Main" class="nav">
+<a href="#top" class="logo">boosog</a>
+<div class="nav-links">
+<a href="#audiences">Employers</a>
+<a href="#audiences">Employees</a>
+<a href="#restaurants">Restaurants</a>
+<a href="#faq">FAQ</a>
 </div>
-<div style="display: flex; align-items: center; gap: 10px">
-<a href="#login" style="color: #10241D; text-decoration: none; font-weight: 600; font-size: 15px; padding: 12px 16px; min-height: 44px; box-sizing: border-box; display: inline-flex; align-items: center">Log in</a>
-<a href="#demo" style="background: #FFFFFF; color: #10241D; text-decoration: none; font-weight: 700; font-size: 15px; padding: 12px 20px; border-radius: 999px; min-height: 44px; box-sizing: border-box; display: inline-flex; align-items: center">Book a demo</a>
+<div class="nav-right">
+<sc-if value="{{showLogin}}" hint-placeholder-val="{{false}}"><a href="#login" class="nav-login">Log in</a></sc-if>
+<a href="https://cal.com/j-boy-cagumbay-olk2cu/book-a-demo" target="_blank" rel="noopener" class="nav-demo">Book a demo</a>
+<button type="button" class="menu-btn" aria-label="Menu" aria-expanded="{{menuExpanded}}" aria-controls="mobile-menu" onClick="{{toggleMenu}}"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16"></path><path d="M4 12h16"></path><path d="M4 17h16"></path></svg></button>
 </div>
 </nav>
+<sc-if value="{{menuOpen}}" hint-placeholder-val="{{false}}">
+<div id="mobile-menu" class="mobile-menu">
+<a href="#audiences" onClick="{{closeMenu}}">Employers</a>
+<a href="#audiences" onClick="{{closeMenu}}">Employees</a>
+<a href="#restaurants" onClick="{{closeMenu}}">Restaurants</a>
+<a href="#faq" onClick="{{closeMenu}}">FAQ</a>
+<sc-if value="{{showLogin}}" hint-placeholder-val="{{false}}"><a href="#login" onClick="{{closeMenu}}">Log in</a></sc-if>
+</div>
+</sc-if>
 </header>
 
 <!-- HERO -->
-<section id="top" style="background: {{brand}}; padding: 40px 24px 96px">
-<div style="max-width: 1200px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: center; gap: 56px">
-<div style="flex: 1 1 480px; min-width: 0; color: #10241D">
-<p style="margin: 0 0 20px; display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.45); padding: 8px 14px; border-radius: 999px; font-size: 14px; font-weight: 600">Meal benefits, made simple</p>
-<h1 style="margin: 0 0 20px; font-size: clamp(40px, 6vw, 68px); line-height: 1.04; font-weight: 800; letter-spacing: -1.5px">Lunch is on the company.<br><em style="font-style: italic; font-weight: 600; color: #FFFFFF">Paid with one scan.</em></h1>
-<p style="margin: 0 0 32px; font-size: 19px; line-height: 1.55; max-width: 520px">Boosog gives your team a meal budget they spend at partner restaurants. Employees scan, restaurants get paid, HR does nothing else.</p>
-<div style="display: flex; flex-wrap: wrap; gap: 12px">
-<a href="#demo" style="background: #10241D; color: #FFFFFF; text-decoration: none; font-weight: 700; font-size: 16px; padding: 16px 26px; border-radius: 999px; min-height: 52px; box-sizing: border-box; display: inline-flex; align-items: center">Book a demo</a>
-<a href="#restaurants" style="background: #FFFFFF; color: #10241D; text-decoration: none; font-weight: 700; font-size: 16px; padding: 16px 26px; border-radius: 999px; min-height: 52px; box-sizing: border-box; display: inline-flex; align-items: center">I own a restaurant</a>
+<section id="top" class="hero" style="background: {{brand}}">
+<div class="hero-grid">
+<div>
+<p class="pill">Meal benefits, made simple</p>
+<h1 class="h1">Lunch is on the company.<br><em class="acc" style="color: #FFFFFF">Paid with one scan.</em></h1>
+<p class="hero-sub">Boosog gives your team a meal budget they spend at partner restaurants. Employees scan, restaurants get paid, HR does nothing else.</p>
+<div class="btns">
+<a href="https://cal.com/j-boy-cagumbay-olk2cu/book-a-demo" target="_blank" rel="noopener" class="btn btn-dark">Book a demo</a>
+<a href="https://tally.so/r/4aQY6d" target="_blank" rel="noopener" class="btn btn-light">I own a restaurant</a>
 </div>
-<div style="margin-top: 24px; display: flex; flex-wrap: wrap; gap: 8px 20px; font-size: 14px; font-weight: 600">
-<span style="display: inline-flex; align-items: center; gap: 6px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg>No cards to ship</span>
-<span style="display: inline-flex; align-items: center; gap: 6px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg>No terminals to buy</span>
-<span style="display: inline-flex; align-items: center; gap: 6px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg>No receipts to chase</span>
+<div class="checks">
+<span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg>No cards to ship</span>
+<span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg>No terminals to buy</span>
+<span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg>No receipts to chase</span>
 </div>
 </div>
 
 <!-- phone mockup -->
-<div style="flex: 1 1 380px; min-width: 0; display: flex; justify-content: center; position: relative; padding: 24px 0">
-<div style="width: 300px; height: 600px; background: #FFFFFF; border: 10px solid #10241D; border-radius: 44px; box-sizing: border-box; padding: 28px 20px; display: flex; flex-direction: column; gap: 16px; box-shadow: 0 30px 60px rgba(16,36,29,0.28)">
+<div class="phone-stage">
+<div class="phone-box">
+<div class="phone">
 <div style="display: flex; justify-content: space-between; align-items: center">
 <span style="font-weight: 800; font-size: 20px; color: #1A6B55">boosog</span>
 <span style="width: 34px; height: 34px; border-radius: 50%; background: #E8F5EF; color: #1A6B55; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center">AL</span>
 </div>
-<div style="background: #10241D; color: #FFFFFF; border-radius: 20px; padding: 20px; display: flex; flex-direction: column; gap: 6px">
+<div class="bal">
 <span style="font-size: 13px; color: #B9D6CB">Meal balance</span>
-<span style="font-size: 32px; font-weight: 800; letter-spacing: -0.5px">₱2,450.00</span>
+<span class="bal-amt">₱2,450.00</span>
 <span style="font-size: 12px; color: #B9D6CB">Refills on the 1st</span>
 </div>
-<div style="background: {{sun}}; color: #10241D; border-radius: 16px; padding: 16px; display: flex; align-items: center; justify-content: center; gap: 10px; font-weight: 700; font-size: 16px">
+<div class="scan" style="background: {{sun}}">
 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7V5a2 2 0 0 1 2-2h2"></path><path d="M17 3h2a2 2 0 0 1 2 2v2"></path><path d="M21 17v2a2 2 0 0 1-2 2h-2"></path><path d="M7 21H5a2 2 0 0 1-2-2v-2"></path><path d="M7 12h10"></path></svg>
 Scan to pay
 </div>
 <span style="font-size: 13px; font-weight: 700; color: #4A5D56; margin-top: 4px">Recent</span>
 <div style="display: flex; flex-direction: column; gap: 10px">
-<div style="display: flex; justify-content: space-between; font-size: 14px; padding-bottom: 10px; border-bottom: 1px solid #E3EEE9"><span>Bob’s Cafe</span><span style="font-weight: 700">−₱185.00</span></div>
-<div style="display: flex; justify-content: space-between; font-size: 14px; padding-bottom: 10px; border-bottom: 1px solid #E3EEE9"><span>Lola’s Carinderia</span><span style="font-weight: 700">−₱120.00</span></div>
-<div style="display: flex; justify-content: space-between; font-size: 14px"><span>Bob’s Cafe</span><span style="font-weight: 700">−₱95.00</span></div>
+<div class="row"><span>Bob’s Cafe</span><span style="font-weight: 700">−₱185.00</span></div>
+<div class="row"><span>Lola’s Carinderia</span><span style="font-weight: 700">−₱120.00</span></div>
+<div class="row"><span>Bob’s Cafe</span><span style="font-weight: 700">−₱95.00</span></div>
 </div>
 </div>
-<div style="position: absolute; left: 50%; bottom: 72px; transform: translateX(-250px); background: #FFFFFF; border-radius: 18px; padding: 14px 18px; display: flex; align-items: center; gap: 12px; box-shadow: 0 16px 40px rgba(16,36,29,0.22)">
-<span style="width: 38px; height: 38px; border-radius: 50%; background: #E8F5EF; color: #1A6B55; display: flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg></span>
+<div class="toast">
+<span style="width: 36px; height: 36px; border-radius: 50%; background: #E8F5EF; color: #1A6B55; display: flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg></span>
 <span style="display: flex; flex-direction: column"><span style="font-size: 13px; color: #4A5D56">Paid at Bob’s Cafe</span><span style="font-size: 18px; font-weight: 800">₱185.00</span></span>
+</div>
 </div>
 </div>
 </div>
@@ -89,13 +290,13 @@ Scan to pay
 
 <!-- PROOF: STATS + LOGOS -->
 <sc-if value="{{showStats}}" hint-placeholder-val="{{false}}">
-<section aria-label="Boosog in numbers" style="padding: 64px 24px; border-bottom: 1px solid #E3EEE9">
-<div style="max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; gap: 40px">
-<p style="margin: 0; text-align: center; font-size: clamp(22px, 2.6vw, 30px); line-height: 1.3; font-weight: 800; letter-spacing: -0.5px">[X,XXX] employees already eat with Boosog. <em style="font-style: italic; font-weight: 600; color: #1A6B55">Every working day.</em></p>
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px">
-<div style="background: #F6FAF8; border-radius: 20px; padding: 24px; display: flex; flex-direction: column; gap: 4px; text-align: center"><span style="font-size: 40px; font-weight: 800; letter-spacing: -1px; color: #1A6B55">[120+]</span><span style="font-size: 15px; color: #4A5D56">partner restaurants</span></div>
-<div style="background: #F6FAF8; border-radius: 20px; padding: 24px; display: flex; flex-direction: column; gap: 4px; text-align: center"><span style="font-size: 40px; font-weight: 800; letter-spacing: -1px; color: #1A6B55">[₱X.XM]</span><span style="font-size: 15px; color: #4A5D56">in meals paid every month</span></div>
-<div style="background: #F6FAF8; border-radius: 20px; padding: 24px; display: flex; flex-direction: column; gap: 4px; text-align: center"><span style="font-size: 40px; font-weight: 800; letter-spacing: -1px; color: #1A6B55">[X] min</span><span style="font-size: 15px; color: #4A5D56">average support reply</span></div>
+<section aria-label="Boosog in numbers" class="sec" style="border-bottom: 1px solid #E3EEE9">
+<div class="wrap stack">
+<p style="margin: 0; text-align: center; font-size: clamp(22px, 5.5vw, 30px); line-height: 1.3; font-weight: 800; letter-spacing: -0.5px">[X,XXX] employees already eat with Boosog. <em class="acc">Every working day.</em></p>
+<div class="grid3">
+<div class="stat"><b>[120+]</b><span class="muted">partner restaurants</span></div>
+<div class="stat"><b>[₱X.XM]</b><span class="muted">in meals paid every month</span></div>
+<div class="stat"><b>[X] min</b><span class="muted">average support reply</span></div>
 </div>
 <sc-if value="{{showCompanies}}" hint-placeholder-val="{{false}}">
 <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 16px 40px">
@@ -111,105 +312,105 @@ Scan to pay
 </sc-if>
 
 <!-- BENEFITS TRIO -->
-<section aria-label="Why Boosog" style="padding: 96px 24px 0">
-<div style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px">
-<div style="border: 1px solid #E3EEE9; border-radius: 28px; overflow: hidden; display: flex; flex-direction: column">
-<img src="assets/pay-with-phone.jpg" alt="A customer pays with his phone at a café table" style="display: block; width: 100%; height: 220px; object-fit: cover; background: #E8F5EF">
-<div style="padding: 28px; display: flex; flex-direction: column; gap: 10px">
-<h3 style="margin: 0; font-size: 22px; line-height: 1.25; font-weight: 800">No card to carry. <em style="font-style: italic; font-weight: 600; color: #1A6B55">Just a phone.</em></h3>
-<p style="margin: 0; font-size: 16px; line-height: 1.55; color: #4A5D56">Employees pay from the Boosog app. Nothing to ship, nothing to lose, nothing to replace.</p>
+<section aria-label="Why Boosog" class="sec" style="padding-bottom: 0">
+<div class="wrap grid3">
+<div class="card">
+<div class="card-art"><img src="assets/card-phone.svg" alt="Illustration of a phone showing a Boosog meal allowance and a payment sent confirmation"></div>
+<div class="card-body">
+<h3 class="card-title">No card to carry. <em class="acc">Just a phone.</em></h3>
+<p>Employees pay from the Boosog app. Nothing to ship, nothing to lose, nothing to replace.</p>
 </div>
 </div>
-<div style="border: 1px solid #E3EEE9; border-radius: 28px; overflow: hidden; display: flex; flex-direction: column">
-<img src="assets/cafe-counter.jpg" alt="A customer pays at a café counter" style="display: block; width: 100%; height: 220px; object-fit: cover; background: #E8F5EF">
-<div style="padding: 28px; display: flex; flex-direction: column; gap: 10px">
-<h3 style="margin: 0; font-size: 22px; line-height: 1.25; font-weight: 800">Paid at the counter. <em style="font-style: italic; font-weight: 600; color: #1A6B55">Not next month.</em></h3>
-<p style="margin: 0; font-size: 16px; line-height: 1.55; color: #4A5D56">Restaurants see each payment the moment it lands. No vouchers to count or redeem.</p>
+<div class="card">
+<div class="card-art"><img src="assets/card-counter.svg" alt="Illustration of a restaurant counter screen showing paid in full, with an instant receipt"></div>
+<div class="card-body">
+<h3 class="card-title">Paid at the counter. <em class="acc">Not next month.</em></h3>
+<p>Restaurants see each payment the moment it lands. No vouchers to count or redeem.</p>
 </div>
 </div>
-<div style="border: 1px solid #E3EEE9; border-radius: 28px; overflow: hidden; display: flex; flex-direction: column">
-<img src="assets/hr-at-desk.jpg" alt="An HR manager smiles while working on her laptop" style="display: block; width: 100%; height: 220px; object-fit: cover; background: #E8F5EF">
-<div style="padding: 28px; display: flex; flex-direction: column; gap: 10px">
-<h3 style="margin: 0; font-size: 22px; line-height: 1.25; font-weight: 800">Zero paperwork. <em style="font-style: italic; font-weight: 600; color: #1A6B55">For HR, too.</em></h3>
-<p style="margin: 0; font-size: 16px; line-height: 1.55; color: #4A5D56">Budgets top up on their own and every meal ends up in one monthly report.</p>
+<div class="card">
+<div class="card-art"><img src="assets/card-hr.svg" alt="Illustration of a laptop showing a monthly meal expense report"></div>
+<div class="card-body">
+<h3 class="card-title">Zero paperwork. <em class="acc">For HR, too.</em></h3>
+<p>Budgets top up on their own and every meal ends up in one monthly report.</p>
 </div>
 </div>
 </div>
 </section>
 
 <!-- AUDIENCES -->
-<section id="audiences" style="padding: 104px 24px">
-<div style="max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; gap: 40px">
-<div style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 14px">
-<h2 style="margin: 0; font-size: clamp(32px, 4vw, 48px); line-height: 1.1; font-weight: 800; letter-spacing: -1px">One app.<br><em style="font-style: italic; font-weight: 600; color: #1A6B55">Everyone eats well.</em></h2>
-<p style="margin: 0; font-size: 18px; line-height: 1.55; color: #4A5D56; max-width: 600px">Boosog works for the company that pays, the people who eat and the restaurants that serve.</p>
+<section id="audiences" class="sec">
+<div class="wrap stack">
+<div class="head">
+<h2 class="h2">One app.<br><em class="acc">Everyone eats well.</em></h2>
+<p class="lead">Boosog works for the company that pays, the people who eat and the restaurants that serve.</p>
 </div>
-<div role="tablist" aria-label="Who is Boosog for" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; background: #E8F5EF; padding: 6px; border-radius: 999px; align-self: center">
+<div role="tablist" aria-label="Who is Boosog for" class="tabs">
 <sc-for list="{{tabs}}" as="t" hint-placeholder-count="3">
-<button type="button" role="tab" aria-selected="{{t.selected}}" onClick="{{t.pick}}" style="{{t.style}}">{{t.label}}</button>
+<button type="button" role="tab" class="tab" aria-selected="{{t.selected}}" onClick="{{t.pick}}" style="{{t.style}}">{{t.label}}</button>
 </sc-for>
 </div>
 
 <sc-if value="{{isEmployers}}" hint-placeholder-val="{{true}}">
-<div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: stretch">
-<div style="flex: 1 1 420px; min-width: 0; display: flex; flex-direction: column; gap: 22px; justify-content: center">
-<h3 style="margin: 0; font-size: 32px; line-height: 1.15; font-weight: 800">A benefit your team feels. <em style="font-style: italic; font-weight: 600; color: #1A6B55">Every day.</em></h3>
-<div style="display: flex; flex-direction: column; gap: 18px">
-<div style="display: flex; gap: 14px"><span style="flex: none; width: 40px; height: 40px; border-radius: 12px; background: #E8F5EF; color: #1A6B55; display: flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v20"></path><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg></span><span style="display: flex; flex-direction: column; gap: 4px"><strong style="font-size: 17px">Set monthly budgets. <em style="font-style: italic; font-weight: 600; color: #1A6B55">In minutes.</em></strong><span style="font-size: 16px; line-height: 1.5; color: #4A5D56">Choose an amount per employee. Boosog tops up every balance for you.</span></span></div>
-<div style="display: flex; gap: 14px"><span style="flex: none; width: 40px; height: 40px; border-radius: 12px; background: #E8F5EF; color: #1A6B55; display: flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><path d="M14 2v6h6"></path><path d="M8 13h8"></path><path d="M8 17h5"></path></svg></span><span style="display: flex; flex-direction: column; gap: 4px"><strong style="font-size: 17px">No receipts to chase. <em style="font-style: italic; font-weight: 600; color: #1A6B55">Ever.</em></strong><span style="font-size: 16px; line-height: 1.5; color: #4A5D56">Every meal is paid in the app and listed in one monthly report.</span></span></div>
-<div style="display: flex; gap: 14px"><span style="flex: none; width: 40px; height: 40px; border-radius: 12px; background: #E8F5EF; color: #1A6B55; display: flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></span><span style="display: flex; flex-direction: column; gap: 4px"><strong style="font-size: 17px">A perk people notice. <em style="font-style: italic; font-weight: 600; color: #1A6B55">At every lunch.</em></strong><span style="font-size: 16px; line-height: 1.5; color: #4A5D56">A daily, visible benefit that helps you attract and keep talent.</span></span></div>
+<div class="split">
+<div class="col">
+<h3 class="h3">A benefit your team feels. <em class="acc">Every day.</em></h3>
+<div class="feats">
+<div class="feat"><span class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v20"></path><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg></span><span class="feat-txt"><strong>Set monthly budgets. <em class="acc">In minutes.</em></strong><span>Choose an amount per employee. Boosog tops up every balance for you.</span></span></div>
+<div class="feat"><span class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><path d="M14 2v6h6"></path><path d="M8 13h8"></path><path d="M8 17h5"></path></svg></span><span class="feat-txt"><strong>No receipts to chase. <em class="acc">Ever.</em></strong><span>Every meal is paid in the app and listed in one monthly report.</span></span></div>
+<div class="feat"><span class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></span><span class="feat-txt"><strong>A perk people notice. <em class="acc">At every lunch.</em></strong><span>A daily, visible benefit that helps you attract and keep talent.</span></span></div>
 </div>
-<a href="#demo" style="align-self: flex-start; background: #1A6B55; color: #FFFFFF; text-decoration: none; font-weight: 700; font-size: 16px; padding: 15px 24px; border-radius: 999px; min-height: 48px; box-sizing: border-box; display: inline-flex; align-items: center">Book a demo</a>
+<a href="https://cal.com/j-boy-cagumbay-olk2cu/book-a-demo" target="_blank" rel="noopener" class="btn btn-green btn-solo">Book a demo</a>
 </div>
-<div style="flex: 1 1 420px; min-width: 0; background: #E8F5EF; border-radius: 28px; padding: 32px; box-sizing: border-box; display: flex; flex-direction: column; gap: 14px; justify-content: center">
+<div class="panel">
 <span style="font-size: 14px; font-weight: 700; color: #1A6B55">Monthly top-up · November</span>
-<div style="background: #FFFFFF; border-radius: 18px; padding: 20px; display: flex; flex-direction: column; gap: 12px">
+<div class="panel-inner">
 <div style="display: flex; justify-content: space-between; font-size: 15px"><span>Employees</span><strong>[24]</strong></div>
 <div style="display: flex; justify-content: space-between; font-size: 15px"><span>Budget per person</span><strong>[₱2,500.00]</strong></div>
 <div style="height: 1px; background: #E3EEE9"></div>
 <div style="display: flex; justify-content: space-between; font-size: 17px"><span style="font-weight: 700">Total</span><strong>[₱60,000.00]</strong></div>
 </div>
-<div style="background: #10241D; color: #FFFFFF; border-radius: 14px; padding: 15px; text-align: center; font-weight: 700">Confirm top-up</div>
+<div class="panel-cta">Confirm top-up</div>
 </div>
 </div>
 </sc-if>
 
 <sc-if value="{{isEmployees}}" hint-placeholder-val="{{false}}">
-<div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: stretch">
-<div style="flex: 1 1 420px; min-width: 0; display: flex; flex-direction: column; gap: 22px; justify-content: center">
-<h3 style="margin: 0; font-size: 32px; line-height: 1.15; font-weight: 800">Your lunch money. <em style="font-style: italic; font-weight: 600; color: #1A6B55">Always in your pocket.</em></h3>
-<div style="display: flex; flex-direction: column; gap: 18px">
-<div style="display: flex; gap: 14px"><span style="flex: none; width: 40px; height: 40px; border-radius: 12px; background: #E8F5EF; color: #1A6B55; display: flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7V5a2 2 0 0 1 2-2h2"></path><path d="M17 3h2a2 2 0 0 1 2 2v2"></path><path d="M21 17v2a2 2 0 0 1-2 2h-2"></path><path d="M7 21H5a2 2 0 0 1-2-2v-2"></path><path d="M7 12h10"></path></svg></span><span style="display: flex; flex-direction: column; gap: 4px"><strong style="font-size: 17px">Scan and pay. <em style="font-style: italic; font-weight: 600; color: #1A6B55">No card.</em></strong><span style="font-size: 16px; line-height: 1.5; color: #4A5D56">Scan the restaurant’s QR code, enter the amount, done.</span></span></div>
-<div style="display: flex; gap: 14px"><span style="flex: none; width: 40px; height: 40px; border-radius: 12px; background: #E8F5EF; color: #1A6B55; display: flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></span><span style="display: flex; flex-direction: column; gap: 4px"><strong style="font-size: 17px">Find places nearby. <em style="font-style: italic; font-weight: 600; color: #1A6B55">Right in the app.</em></strong><span style="font-size: 16px; line-height: 1.5; color: #4A5D56">See partner restaurants around your office.</span></span></div>
-<div style="display: flex; gap: 14px"><span style="flex: none; width: 40px; height: 40px; border-radius: 12px; background: #E8F5EF; color: #1A6B55; display: flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg></span><span style="display: flex; flex-direction: column; gap: 4px"><strong style="font-size: 17px">See your balance. <em style="font-style: italic; font-weight: 600; color: #1A6B55">Live.</em></strong><span style="font-size: 16px; line-height: 1.5; color: #4A5D56">Every payment shows up at once, with your remaining budget.</span></span></div>
+<div class="split">
+<div class="col">
+<h3 class="h3">Your lunch money. <em class="acc">Always in your pocket.</em></h3>
+<div class="feats">
+<div class="feat"><span class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7V5a2 2 0 0 1 2-2h2"></path><path d="M17 3h2a2 2 0 0 1 2 2v2"></path><path d="M21 17v2a2 2 0 0 1-2 2h-2"></path><path d="M7 21H5a2 2 0 0 1-2-2v-2"></path><path d="M7 12h10"></path></svg></span><span class="feat-txt"><strong>Scan and pay. <em class="acc">No card.</em></strong><span>Scan the restaurant’s QR code, enter the amount, done.</span></span></div>
+<div class="feat"><span class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></span><span class="feat-txt"><strong>Find places nearby. <em class="acc">Right in the app.</em></strong><span>See partner restaurants around your office.</span></span></div>
+<div class="feat"><span class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg></span><span class="feat-txt"><strong>See your balance. <em class="acc">Live.</em></strong><span>Every payment shows up at once, with your remaining budget.</span></span></div>
 </div>
-<a href="#download" style="align-self: flex-start; background: #1A6B55; color: #FFFFFF; text-decoration: none; font-weight: 700; font-size: 16px; padding: 15px 24px; border-radius: 999px; min-height: 48px; box-sizing: border-box; display: inline-flex; align-items: center">Get the app</a>
+<a href="#download" class="btn btn-green btn-solo">Get the app</a>
 </div>
-<div style="flex: 1 1 420px; min-width: 0; background: #E8F5EF; border-radius: 28px; padding: 32px; box-sizing: border-box; display: flex; flex-direction: column; gap: 14px; justify-content: center">
+<div class="panel">
 <span style="font-size: 14px; font-weight: 700; color: #1A6B55">Pay at Bob’s Cafe</span>
-<div style="background: #FFFFFF; border-radius: 18px; padding: 24px; display: flex; flex-direction: column; align-items: center; gap: 6px">
+<div class="panel-inner" style="align-items: center; gap: 6px; padding: 24px">
 <span style="font-size: 14px; color: #4A5D56">Amount</span>
 <span style="font-size: 44px; font-weight: 800; letter-spacing: -1px">₱185.00</span>
 <span style="font-size: 13px; color: #4A5D56">Balance after: ₱2,265.00</span>
 </div>
-<div style="background: #10241D; color: #FFFFFF; border-radius: 14px; padding: 15px; text-align: center; font-weight: 700">Pay now</div>
+<div class="panel-cta">Pay now</div>
 </div>
 </div>
 </sc-if>
 
 <sc-if value="{{isRestaurants}}" hint-placeholder-val="{{false}}">
-<div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: stretch">
-<div style="flex: 1 1 420px; min-width: 0; display: flex; flex-direction: column; gap: 22px; justify-content: center">
-<h3 style="margin: 0; font-size: 32px; line-height: 1.15; font-weight: 800">New customers at lunch. <em style="font-style: italic; font-weight: 600; color: #1A6B55">Every working day.</em></h3>
-<div style="display: flex; flex-direction: column; gap: 18px">
-<div style="display: flex; gap: 14px"><span style="flex: none; width: 40px; height: 40px; border-radius: 12px; background: #E8F5EF; color: #1A6B55; display: flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect><path d="M14 14h3v3h-3z"></path><path d="M21 14v7h-7"></path></svg></span><span style="display: flex; flex-direction: column; gap: 4px"><strong style="font-size: 17px">Just a printed QR code. <em style="font-style: italic; font-weight: 600; color: #1A6B55">No terminal.</em></strong><span style="font-size: 16px; line-height: 1.5; color: #4A5D56">Print your code and put it at the counter.</span></span></div>
-<div style="display: flex; gap: 14px"><span style="flex: none; width: 40px; height: 40px; border-radius: 12px; background: #E8F5EF; color: #1A6B55; display: flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg></span><span style="display: flex; flex-direction: column; gap: 4px"><strong style="font-size: 17px">Check each payment. <em style="font-style: italic; font-weight: 600; color: #1A6B55">Instantly.</em></strong><span style="font-size: 16px; line-height: 1.5; color: #4A5D56">Every payment appears on your dashboard before the customer leaves.</span></span></div>
-<div style="display: flex; gap: 14px"><span style="flex: none; width: 40px; height: 40px; border-radius: 12px; background: #E8F5EF; color: #1A6B55; display: flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="6" width="20" height="12" rx="2"></rect><circle cx="12" cy="12" r="2"></circle><path d="M6 12h.01M18 12h.01"></path></svg></span><span style="display: flex; flex-direction: column; gap: 4px"><strong style="font-size: 17px">Get paid. <em style="font-style: italic; font-weight: 600; color: #1A6B55">When you want.</em></strong><span style="font-size: 16px; line-height: 1.5; color: #4A5D56">Request a payout anytime from your available balance.</span></span></div>
+<div class="split">
+<div class="col">
+<h3 class="h3">New customers at lunch. <em class="acc">Every working day.</em></h3>
+<div class="feats">
+<div class="feat"><span class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect><path d="M14 14h3v3h-3z"></path><path d="M21 14v7h-7"></path></svg></span><span class="feat-txt"><strong>Just a printed QR code. <em class="acc">No terminal.</em></strong><span>Print your code and put it at the counter.</span></span></div>
+<div class="feat"><span class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg></span><span class="feat-txt"><strong>Check each payment. <em class="acc">Instantly.</em></strong><span>Every payment appears on your dashboard before the customer leaves.</span></span></div>
+<div class="feat"><span class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="6" width="20" height="12" rx="2"></rect><circle cx="12" cy="12" r="2"></circle><path d="M6 12h.01M18 12h.01"></path></svg></span><span class="feat-txt"><strong>Get paid. <em class="acc">When you want.</em></strong><span>Request a payout anytime from your available balance.</span></span></div>
 </div>
-<a href="#partner" style="align-self: flex-start; background: #1A6B55; color: #FFFFFF; text-decoration: none; font-weight: 700; font-size: 16px; padding: 15px 24px; border-radius: 999px; min-height: 48px; box-sizing: border-box; display: inline-flex; align-items: center">Become a partner</a>
+<a href="https://tally.so/r/4aQY6d" target="_blank" rel="noopener" class="btn btn-green btn-solo">Add my restaurant</a>
 </div>
-<div style="flex: 1 1 420px; min-width: 0; background: #E8F5EF; border-radius: 28px; padding: 32px; box-sizing: border-box; display: flex; align-items: center; justify-content: center">
-<div style="background: #FFFFFF; border-radius: 20px; padding: 28px; display: flex; flex-direction: column; align-items: center; gap: 14px; width: 260px; box-sizing: border-box">
+<div class="panel" style="align-items: center">
+<div class="panel-inner" style="align-items: center; gap: 14px; padding: 28px; width: 100%; max-width: 260px">
 <strong style="font-size: 18px">Bob’s Cafe</strong>
 <svg width="150" height="150" viewBox="0 0 21 21" role="img" aria-label="QR code placeholder" shape-rendering="crispEdges"><rect width="21" height="21" fill="#FFFFFF"></rect><path fill="#10241D" d="M0 0h7v7H0zM14 0h7v7h-7zM0 14h7v7H0z"></path><path fill="#FFFFFF" d="M1 1h5v5H1zM15 1h5v5h-5zM1 15h5v5H1z"></path><path fill="#10241D" d="M2 2h3v3H2zM16 2h3v3h-3zM2 16h3v3H2zM8 0h2v2H8zM11 1h2v3h-2zM8 4h3v2H8zM9 8h3v2H9zM14 8h2v3h-2zM17 9h3v2h-3zM8 12h2v3H8zM11 11h3v2h-3zM15 13h3v2h-3zM12 15h2v3h-2zM9 17h2v4H9zM15 17h2v2h-2zM18 16h3v2h-3zM17 19h4v2h-4zM0 8h3v2H0zM4 9h3v3H4zM1 11h2v2H1zM12 19h3v2h-3z"></path></svg>
 <span style="font-size: 13px; color: #4A5D56; text-align: center">Scan with the Boosog app to pay with your benefits.</span>
@@ -221,91 +422,91 @@ Scan to pay
 </section>
 
 <!-- HOW IT WORKS -->
-<section style="padding: 96px 24px; background: #F6FAF8">
-<div style="max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; gap: 48px">
-<div style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 14px">
-<h2 style="margin: 0; font-size: clamp(32px, 4vw, 48px); line-height: 1.1; font-weight: 800; letter-spacing: -1px">Three steps.<br><em style="font-style: italic; font-weight: 600; color: #1A6B55">No paper vouchers.</em></h2>
+<section class="sec" style="background: #F6FAF8">
+<div class="wrap stack">
+<div class="head">
+<h2 class="h2">Three steps.<br><em class="acc">No paper vouchers.</em></h2>
 </div>
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px">
-<div style="background: #FFFFFF; border: 1px solid #E3EEE9; border-radius: 24px; padding: 32px; display: flex; flex-direction: column; gap: 14px">
-<span style="width: 48px; height: 48px; border-radius: 50%; background: {{brand}}; color: #10241D; font-size: 20px; font-weight: 800; display: flex; align-items: center; justify-content: center">1</span>
-<h3 style="margin: 0; font-size: 22px; font-weight: 800">The company tops up</h3>
-<p style="margin: 0; font-size: 16px; line-height: 1.55; color: #4A5D56">HR sets a monthly meal budget. Each employee gets it in their Boosog app.</p>
+<div class="grid3">
+<div class="step">
+<span class="num" style="background: {{brand}}">1</span>
+<h3>The company tops up</h3>
+<p>HR sets a monthly meal budget. Each employee gets it in their Boosog app.</p>
 </div>
-<div style="background: #FFFFFF; border: 1px solid #E3EEE9; border-radius: 24px; padding: 32px; display: flex; flex-direction: column; gap: 14px">
-<span style="width: 48px; height: 48px; border-radius: 50%; background: {{brand}}; color: #10241D; font-size: 20px; font-weight: 800; display: flex; align-items: center; justify-content: center">2</span>
-<h3 style="margin: 0; font-size: 22px; font-weight: 800">The employee scans</h3>
-<p style="margin: 0; font-size: 16px; line-height: 1.55; color: #4A5D56">At the counter, they scan the restaurant’s QR code and pay from their balance.</p>
+<div class="step">
+<span class="num" style="background: {{brand}}">2</span>
+<h3>The employee scans</h3>
+<p>At the counter, they scan the restaurant’s QR code and pay from their balance.</p>
 </div>
-<div style="background: #FFFFFF; border: 1px solid #E3EEE9; border-radius: 24px; padding: 32px; display: flex; flex-direction: column; gap: 14px">
-<span style="width: 48px; height: 48px; border-radius: 50%; background: {{brand}}; color: #10241D; font-size: 20px; font-weight: 800; display: flex; align-items: center; justify-content: center">3</span>
-<h3 style="margin: 0; font-size: 22px; font-weight: 800">The restaurant gets paid</h3>
-<p style="margin: 0; font-size: 16px; line-height: 1.55; color: #4A5D56">The payment shows on the restaurant’s dashboard right away. Payout follows.</p>
+<div class="step">
+<span class="num" style="background: {{brand}}">3</span>
+<h3>The restaurant gets paid</h3>
+<p>The payment shows on the restaurant’s dashboard right away. Payout follows.</p>
 </div>
 </div>
 </div>
 </section>
 
 <!-- SPEND YOUR WAY: centered phone with features around it -->
-<section aria-label="In the app" style="padding: 104px 24px">
-<div style="max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; gap: 56px">
-<div style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 14px">
-<h2 style="margin: 0; font-size: clamp(32px, 4vw, 48px); line-height: 1.1; font-weight: 800; letter-spacing: -1px">Your meal budget.<br><em style="font-style: italic; font-weight: 600; color: #1A6B55">Your way.</em></h2>
-<p style="margin: 0; font-size: 18px; line-height: 1.55; color: #4A5D56; max-width: 560px">Everything an employee needs at lunchtime, in one screen.</p>
+<section aria-label="In the app" class="sec">
+<div class="wrap stack">
+<div class="head">
+<h2 class="h2">Your meal budget.<br><em class="acc">Your way.</em></h2>
+<p class="lead">Everything an employee needs at lunchtime, in one screen.</p>
 </div>
-<div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 40px">
-<div style="flex: 1 1 260px; min-width: 0; display: flex; flex-direction: column; gap: 40px">
-<div style="display: flex; flex-direction: column; gap: 6px"><strong style="font-size: 20px">Refills on the 1st. <em style="font-style: italic; font-weight: 600; color: #1A6B55">Automatically.</em></strong><span style="font-size: 16px; line-height: 1.55; color: #4A5D56">A fresh budget lands at the start of every month. Nobody has to ask.</span></div>
-<div style="display: flex; flex-direction: column; gap: 6px"><strong style="font-size: 20px">Pay the exact amount. <em style="font-style: italic; font-weight: 600; color: #1A6B55">Down to the centavo.</em></strong><span style="font-size: 16px; line-height: 1.55; color: #4A5D56">No more “we don’t give change for vouchers.”</span></div>
+<div class="spend">
+<div class="spend-col">
+<div class="spend-item"><strong>Refills on the 1st. <em class="acc">Automatically.</em></strong><span>A fresh budget lands at the start of every month. Nobody has to ask.</span></div>
+<div class="spend-item"><strong>Pay the exact amount. <em class="acc">Down to the centavo.</em></strong><span>No more “we don’t give change for vouchers.”</span></div>
 </div>
-<div style="flex: 0 0 auto; display: flex; justify-content: center">
-<div style="width: 270px; height: 540px; background: #FFFFFF; border: 10px solid #10241D; border-radius: 40px; box-sizing: border-box; padding: 24px 18px; display: flex; flex-direction: column; gap: 14px; box-shadow: 0 30px 60px rgba(16,36,29,0.18)">
+<div class="spend-phone">
+<div class="phone phone-sm">
 <span style="font-weight: 800; font-size: 18px">Near you</span>
-<div style="height: 130px; border-radius: 16px; background: #E8F5EF; position: relative; overflow: hidden">
+<div style="height: 120px; flex: none; border-radius: 16px; background: #E8F5EF; position: relative; overflow: hidden">
 <span style="position: absolute; left: 30%; top: 30%; width: 14px; height: 14px; border-radius: 50%; background: #1A6B55; border: 3px solid #FFFFFF"></span>
 <span style="position: absolute; left: 62%; top: 52%; width: 14px; height: 14px; border-radius: 50%; background: #1A6B55; border: 3px solid #FFFFFF"></span>
 <span style="position: absolute; left: 45%; top: 70%; width: 14px; height: 14px; border-radius: 50%; background: {{sun}}; border: 3px solid #10241D"></span>
 </div>
 <div style="display: flex; flex-direction: column; gap: 10px">
-<div style="display: flex; justify-content: space-between; align-items: center; font-size: 14px; padding: 12px; border-radius: 12px; background: #F6FAF8"><span style="display: flex; flex-direction: column"><strong>Bob’s Cafe</strong><span style="font-size: 12px; color: #4A5D56">Coffee · Sandwiches</span></span><span style="font-weight: 700; color: #1A6B55">120 m</span></div>
-<div style="display: flex; justify-content: space-between; align-items: center; font-size: 14px; padding: 12px; border-radius: 12px; background: #F6FAF8"><span style="display: flex; flex-direction: column"><strong>Lola’s Carinderia</strong><span style="font-size: 12px; color: #4A5D56">Filipino</span></span><span style="font-weight: 700; color: #1A6B55">350 m</span></div>
-<div style="display: flex; justify-content: space-between; align-items: center; font-size: 14px; padding: 12px; border-radius: 12px; background: #F6FAF8"><span style="display: flex; flex-direction: column"><strong>Mang Ben’s Grill</strong><span style="font-size: 12px; color: #4A5D56">Inihaw · Rice meals</span></span><span style="font-weight: 700; color: #1A6B55">500 m</span></div>
+<div class="place"><span><strong>Bob’s Cafe</strong><small>Coffee · Sandwiches</small></span><span style="font-weight: 700; color: #1A6B55">120 m</span></div>
+<div class="place"><span><strong>Lola’s Carinderia</strong><small>Filipino</small></span><span style="font-weight: 700; color: #1A6B55">350 m</span></div>
+<div class="place"><span><strong>Mang Ben’s Grill</strong><small>Inihaw · Rice meals</small></span><span style="font-weight: 700; color: #1A6B55">500 m</span></div>
 </div>
 </div>
 </div>
-<div style="flex: 1 1 260px; min-width: 0; display: flex; flex-direction: column; gap: 40px">
-<div style="display: flex; flex-direction: column; gap: 6px"><strong style="font-size: 20px">Every partner nearby. <em style="font-style: italic; font-weight: 600; color: #1A6B55">On one map.</em></strong><span style="font-size: 16px; line-height: 1.55; color: #4A5D56">From the café downstairs to the carinderia around the corner.</span></div>
-<div style="display: flex; flex-direction: column; gap: 6px"><strong style="font-size: 20px">Every payment logged. <em style="font-style: italic; font-weight: 600; color: #1A6B55">The second it happens.</em></strong><span style="font-size: 16px; line-height: 1.55; color: #4A5D56">Your history and remaining balance are always one tap away.</span></div>
+<div class="spend-col">
+<div class="spend-item"><strong>Every partner nearby. <em class="acc">On one map.</em></strong><span>From the café downstairs to the carinderia around the corner.</span></div>
+<div class="spend-item"><strong>Every payment logged. <em class="acc">The second it happens.</em></strong><span>Your history and remaining balance are always one tap away.</span></div>
 </div>
 </div>
-<div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 12px">
-<a href="#demo" style="background: #10241D; color: #FFFFFF; text-decoration: none; font-weight: 700; font-size: 16px; padding: 16px 26px; border-radius: 999px; min-height: 52px; box-sizing: border-box; display: inline-flex; align-items: center">Book a demo</a>
-<a href="#contact" style="background: #E8F5EF; color: #10241D; text-decoration: none; font-weight: 700; font-size: 16px; padding: 16px 26px; border-radius: 999px; min-height: 52px; box-sizing: border-box; display: inline-flex; align-items: center">Talk to our team</a>
+<div class="btns center">
+<a href="https://cal.com/j-boy-cagumbay-olk2cu/book-a-demo" target="_blank" rel="noopener" class="btn btn-dark">Book a demo</a>
+<a href="https://tally.so/r/ArzYNB" target="_blank" rel="noopener" class="btn btn-mint">Contact us</a>
 </div>
 </div>
 </section>
 
 <!-- RESTAURANTS BAND -->
-<section id="restaurants" style="padding: 96px 24px; background: #10241D; color: #FFFFFF">
-<div style="max-width: 1200px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: center; gap: 56px">
-<div style="flex: 1 1 420px; min-width: 0; display: flex; flex-direction: column; gap: 20px">
+<section id="restaurants" class="sec band">
+<div class="wrap split center">
+<div class="col" style="gap: 20px">
 <span style="font-size: 14px; font-weight: 700; color: {{sun}}; letter-spacing: 1px; text-transform: uppercase">For restaurants</span>
-<h2 style="margin: 0; font-size: clamp(32px, 4vw, 48px); line-height: 1.1; font-weight: 800; letter-spacing: -1px">See every payment.<br><em style="font-style: italic; font-weight: 600; color: {{sun}}">Before they walk out.</em></h2>
-<p style="margin: 0; font-size: 18px; line-height: 1.55; color: #C9DDD5">Your Boosog dashboard shows today’s total, the latest payment and the full history. Join for free and start accepting meal benefits this week.</p>
-<a href="#partner" style="align-self: flex-start; background: {{sun}}; color: #10241D; text-decoration: none; font-weight: 700; font-size: 16px; padding: 16px 26px; border-radius: 999px; min-height: 52px; box-sizing: border-box; display: inline-flex; align-items: center">Become a partner</a>
+<h2 class="h2">See every payment.<br><em class="acc" style="color: {{sun}}">Before they walk out.</em></h2>
+<p class="lead" style="color: #C9DDD5">Your Boosog dashboard shows today’s total, the latest payment and the full history. Join for free and start accepting meal benefits this week.</p>
+<a href="https://tally.so/r/4aQY6d" target="_blank" rel="noopener" class="btn btn-solo" style="background: {{sun}}; color: #10241D">Add my restaurant</a>
 </div>
-<div style="flex: 1 1 480px; min-width: 0; background: #FFFFFF; color: #10241D; border-radius: 24px; padding: 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 16px">
-<div style="display: flex; flex-wrap: wrap; gap: 12px">
-<div style="flex: 1 1 160px; border: 1px solid #E3EEE9; border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 4px"><span style="font-size: 13px; color: #4A5D56">Today</span><span style="font-size: 26px; font-weight: 800">₱730.00</span><span style="font-size: 12px; color: #4A5D56">4 payments</span></div>
-<div style="flex: 1 1 160px; border: 1px solid #E3EEE9; border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 4px"><span style="font-size: 13px; color: #4A5D56">Latest</span><span style="font-size: 26px; font-weight: 800">₱100.00</span><span style="font-size: 12px; color: #4A5D56">Ana L. · 19:00</span></div>
+<div class="dash">
+<div class="kpis">
+<div class="kpi"><span>Today</span><b>₱730.00</b><span>4 payments</span></div>
+<div class="kpi"><span>Latest</span><b>₱100.00</b><span>Ana L. · 19:00</span></div>
 </div>
-<div style="overflow-x: auto; border: 1px solid #E3EEE9; border-radius: 14px">
-<table style="width: 100%; border-collapse: collapse; font-size: 14px; min-width: 380px">
-<thead><tr style="background: #F6FAF8; text-align: left"><th style="padding: 12px">When</th><th style="padding: 12px">From</th><th style="padding: 12px">Status</th><th style="padding: 12px; text-align: right">Amount</th></tr></thead>
+<div class="table-wrap">
+<table>
+<thead><tr style="background: #F6FAF8; text-align: left"><th>When</th><th>From</th><th>Status</th><th style="text-align: right">Amount</th></tr></thead>
 <tbody>
-<tr style="border-top: 1px solid #E3EEE9"><td style="padding: 12px">19:00</td><td style="padding: 12px">Ana L.</td><td style="padding: 12px"><span style="background: #E8F5EF; color: #1A6B55; padding: 3px 9px; border-radius: 999px; font-size: 13px; font-weight: 600">Paid</span></td><td style="padding: 12px; text-align: right">₱100.00</td></tr>
-<tr style="border-top: 1px solid #E3EEE9"><td style="padding: 12px">12:41</td><td style="padding: 12px">Marco D.</td><td style="padding: 12px"><span style="background: #E8F5EF; color: #1A6B55; padding: 3px 9px; border-radius: 999px; font-size: 13px; font-weight: 600">Paid</span></td><td style="padding: 12px; text-align: right">₱185.00</td></tr>
-<tr style="border-top: 1px solid #E3EEE9"><td style="padding: 12px">12:22</td><td style="padding: 12px">Joy R.</td><td style="padding: 12px"><span style="background: #E8F5EF; color: #1A6B55; padding: 3px 9px; border-radius: 999px; font-size: 13px; font-weight: 600">Paid</span></td><td style="padding: 12px; text-align: right">₱450.00</td></tr>
+<tr style="border-top: 1px solid #E3EEE9"><td>19:00</td><td>Ana L.</td><td><span class="badge">Paid</span></td><td style="text-align: right">₱100.00</td></tr>
+<tr style="border-top: 1px solid #E3EEE9"><td>12:41</td><td>Marco D.</td><td><span class="badge">Paid</span></td><td style="text-align: right">₱185.00</td></tr>
+<tr style="border-top: 1px solid #E3EEE9"><td>12:22</td><td>Joy R.</td><td><span class="badge">Paid</span></td><td style="text-align: right">₱450.00</td></tr>
 </tbody>
 </table>
 </div>
@@ -315,24 +516,24 @@ Scan to pay
 
 <!-- REASSURANCE TRIO -->
 <sc-if value="{{showSupport}}" hint-placeholder-val="{{false}}">
-<section aria-label="Support" style="padding: 104px 24px 0">
-<div style="max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; gap: 48px">
-<h2 style="margin: 0; text-align: center; font-size: clamp(32px, 4vw, 48px); line-height: 1.1; font-weight: 800; letter-spacing: -1px">Relax.<br><em style="font-style: italic; font-weight: 600; color: #1A6B55">We take it from here.</em></h2>
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 40px">
-<div style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 12px">
-<span style="width: 64px; height: 64px; border-radius: 20px; background: #E8F5EF; color: #1A6B55; display: flex; align-items: center; justify-content: center"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"></path></svg></span>
+<section aria-label="Support" class="sec" style="padding-bottom: 0">
+<div class="wrap stack">
+<h2 class="h2" style="text-align: center">Relax.<br><em class="acc">We take it from here.</em></h2>
+<div class="grid3" style="gap: 36px">
+<div class="trio">
+<span class="trio-ico"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"></path></svg></span>
 <strong style="font-size: 20px">Live in [X] days</strong>
-<span style="font-size: 16px; line-height: 1.55; color: #4A5D56; max-width: 300px">Send us your employee list. We set up accounts and invite everyone.</span>
+<span class="muted" style="font-size: 16px; line-height: 1.55; max-width: 300px">Send us your employee list. We set up accounts and invite everyone.</span>
 </div>
-<div style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 12px">
-<span style="width: 64px; height: 64px; border-radius: 20px; background: #E8F5EF; color: #1A6B55; display: flex; align-items: center; justify-content: center"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></span>
+<div class="trio">
+<span class="trio-ico"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></span>
 <strong style="font-size: 20px">A real person answers</strong>
-<span style="font-size: 16px; line-height: 1.55; color: #4A5D56; max-width: 300px">Employees, HR and restaurants reach our team in-app. Average reply: [X] minutes.</span>
+<span class="muted" style="font-size: 16px; line-height: 1.55; max-width: 300px">Employees, HR and restaurants reach our team in-app. Average reply: [X] minutes.</span>
 </div>
-<div style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 12px">
-<span style="width: 64px; height: 64px; border-radius: 20px; background: #E8F5EF; color: #1A6B55; display: flex; align-items: center; justify-content: center"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"></path><path d="M7 15l4-4 3 3 5-6"></path></svg></span>
+<div class="trio">
+<span class="trio-ico"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"></path><path d="M7 15l4-4 3 3 5-6"></path></svg></span>
 <strong style="font-size: 20px">One clear report</strong>
-<span style="font-size: 16px; line-height: 1.55; color: #4A5D56; max-width: 300px">Every peso, every meal, every month. Ready for payroll and accounting.</span>
+<span class="muted" style="font-size: 16px; line-height: 1.55; max-width: 300px">Every peso, every meal, every month. Ready for payroll and accounting.</span>
 </div>
 </div>
 </div>
@@ -340,46 +541,47 @@ Scan to pay
 </sc-if>
 
 <!-- FAQ -->
-<section id="faq" style="padding: 104px 24px 96px">
-<div style="max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: 32px">
-<h2 style="margin: 0; text-align: center; font-size: clamp(32px, 4vw, 48px); line-height: 1.1; font-weight: 800; letter-spacing: -1px">Got questions?<br><em style="font-style: italic; font-weight: 600; color: #1A6B55">We’ve got answers.</em></h2>
+<section id="faq" class="sec">
+<div class="stack" style="max-width: 800px; margin: 0 auto">
+<h2 class="h2" style="text-align: center">Got questions?<br><em class="acc">We’ve got answers.</em></h2>
 <div style="display: flex; flex-direction: column; gap: 12px">
-<details style="border: 1px solid #E3EEE9; border-radius: 18px; padding: 20px 24px"><summary style="font-size: 18px; font-weight: 700">Do employees need a card?</summary><p style="margin: 12px 0 0; font-size: 16px; line-height: 1.6; color: #4A5D56">No. Employees pay by scanning the restaurant’s QR code with the Boosog app.</p></details>
-<details style="border: 1px solid #E3EEE9; border-radius: 18px; padding: 20px 24px"><summary style="font-size: 18px; font-weight: 700">Where can I use my balance?</summary><p style="margin: 12px 0 0; font-size: 16px; line-height: 1.6; color: #4A5D56">At every partner restaurant in the app. Groceries are coming next.</p></details>
-<details style="border: 1px solid #E3EEE9; border-radius: 18px; padding: 20px 24px"><summary style="font-size: 18px; font-weight: 700">How much does Boosog cost for a company?</summary><p style="margin: 12px 0 0; font-size: 16px; line-height: 1.6; color: #4A5D56">You load the meal budgets you choose, plus a small monthly fee per active employee. The fee depends on your team size. Book a demo and we’ll send you a quote.</p></details>
-<details style="border: 1px solid #E3EEE9; border-radius: 18px; padding: 20px 24px"><summary style="font-size: 18px; font-weight: 700">How long does setup take?</summary><p style="margin: 12px 0 0; font-size: 16px; line-height: 1.6; color: #4A5D56">Minutes, once your company is verified. From your dashboard, you add your employees and set their budgets yourself. They download the app and can start using their balance right away.</p></details>
-<details style="border: 1px solid #E3EEE9; border-radius: 18px; padding: 20px 24px"><summary style="font-size: 18px; font-weight: 700">When do restaurants get paid?</summary><p style="margin: 12px 0 0; font-size: 16px; line-height: 1.6; color: #4A5D56">Whenever you want. Request a payout from your dashboard at any time, as long as you have an available balance. Every payment and payout is listed there too.</p></details>
+<details class="faq"><summary>Do employees need a card?</summary><p>No. Employees pay by scanning the restaurant’s QR code with the Boosog app.</p></details>
+<details class="faq"><summary>Where can I use my balance?</summary><p>At every partner restaurant in the app. Groceries are coming next.</p></details>
+<details class="faq"><summary>How much does Boosog cost for a company?</summary><p>You load the meal budgets you choose, plus a small monthly fee per active employee. The fee depends on your team size. Book a demo and we’ll send you a quote.</p></details>
+<details class="faq"><summary>How long does setup take?</summary><p>Minutes, once your company is verified. From your dashboard, you add your employees and set their budgets yourself. They download the app and can start using their balance right away.</p></details>
+<details class="faq"><summary>When do restaurants get paid?</summary><p>Whenever you want. Request a payout from your dashboard at any time, as long as you have an available balance. Every payment and payout is listed there too.</p></details>
 </div>
 </div>
 </section>
 
 <!-- FINAL CTA -->
-<section id="demo" style="padding: 0 24px 96px">
-<div style="max-width: 1200px; margin: 0 auto; background: {{brand}}; border-radius: 32px; padding: 64px 32px; box-sizing: border-box; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 20px">
-<h2 style="margin: 0; font-size: clamp(30px, 4vw, 46px); line-height: 1.1; font-weight: 800; letter-spacing: -1px; color: #10241D; max-width: 720px">Give your team a better lunch break.<br><em style="font-style: italic; font-weight: 600; color: #FFFFFF">Starting this month.</em></h2>
-<p style="margin: 0; font-size: 18px; color: #10241D; max-width: 520px">Set up Boosog for your company in one call.</p>
-<div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 12px">
-<a href="#demo" style="background: #10241D; color: #FFFFFF; text-decoration: none; font-weight: 700; font-size: 16px; padding: 16px 26px; border-radius: 999px; min-height: 52px; box-sizing: border-box; display: inline-flex; align-items: center">Book a demo</a>
-<a href="#partner" style="background: #FFFFFF; color: #10241D; text-decoration: none; font-weight: 700; font-size: 16px; padding: 16px 26px; border-radius: 999px; min-height: 52px; box-sizing: border-box; display: inline-flex; align-items: center">Add my restaurant</a>
+<section id="demo" class="cta-sec">
+<div class="cta-box" style="background: {{brand}}">
+<h2 class="h2" style="max-width: 720px">Give your team a better lunch break.<br><em class="acc" style="color: #FFFFFF">Starting this month.</em></h2>
+<p style="margin: 0; font-size: 18px; max-width: 520px">Set up Boosog for your company in one call.</p>
+<div class="btns center" style="width: 100%">
+<a href="https://cal.com/j-boy-cagumbay-olk2cu/book-a-demo" target="_blank" rel="noopener" class="btn btn-dark">Book a demo</a>
+<a href="https://tally.so/r/4aQY6d" target="_blank" rel="noopener" class="btn btn-light">Add my restaurant</a>
 </div>
 </div>
 </section>
 
 <!-- FOOTER -->
-<footer style="background: #F6FAF8; padding: 64px 24px 32px">
-<div style="max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; gap: 40px">
-<div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 40px">
-<div style="flex: 1 1 260px; display: flex; flex-direction: column; gap: 12px">
+<footer class="footer">
+<div class="wrap stack" style="gap: 40px">
+<div class="foot-top">
+<div style="display: flex; flex-direction: column; gap: 12px">
 <span style="font-size: 28px; font-weight: 800; color: #1A6B55">boosog</span>
-<span style="font-size: 15px; line-height: 1.55; color: #4A5D56; max-width: 280px">Meal benefits your team uses every day, at restaurants they already love.</span>
+<span class="muted" style="font-size: 15px; line-height: 1.55; max-width: 280px">Meal benefits your team uses every day, at restaurants they already love.</span>
+<a href="mailto:jboy.cagumbay@gmail.com?subject=Boosog%20inquiry" style="font-size: 15px; font-weight: 600">jboy.cagumbay@gmail.com</a>
 </div>
-<div style="display: flex; flex-wrap: wrap; gap: 48px; font-size: 14px">
-<div style="display: flex; flex-direction: column; gap: 10px"><strong style="font-size: 14px">Product</strong><a href="#audiences">For employers</a><a href="#audiences">For employees</a><a href="#restaurants">For restaurants</a></div>
-<div style="display: flex; flex-direction: column; gap: 10px"><strong style="font-size: 14px">Company</strong><a href="#about">About</a><a href="#contact">Contact</a><a href="#faq">FAQ</a></div>
-<div style="display: flex; flex-direction: column; gap: 10px"><strong style="font-size: 14px">Account</strong><a href="#login">Log in</a><a href="#download">Get the app</a><a href="#partner">Become a partner</a></div>
+<div class="foot-cols">
+<div><strong style="font-size: 14px">Product</strong><a href="#audiences">For employers</a><a href="#audiences">For employees</a><a href="#restaurants">For restaurants</a></div>
+<div><strong style="font-size: 14px">Company</strong><a href="#about">About</a><a href="https://tally.so/r/ArzYNB" target="_blank" rel="noopener">Contact</a><a href="#faq">FAQ</a></div>
+<div><strong style="font-size: 14px">Account</strong><sc-if value="{{showLogin}}" hint-placeholder-val="{{false}}"><a href="#login">Log in</a></sc-if><a href="#download">Get the app</a><a href="https://tally.so/r/4aQY6d" target="_blank" rel="noopener">Add my restaurant</a></div>
 </div>
 </div>
-<div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; padding-top: 24px; border-top: 1px solid #E3EEE9; font-size: 14px; color: #4A5D56">
+<div class="foot-bottom">
 <span>© 2026 Boosog</span>
 <div style="display: flex; gap: 24px"><a href="#terms">Terms</a><a href="#privacy">Privacy</a></div>
 </div>
@@ -387,27 +589,31 @@ Scan to pay
 </footer>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"brand":{"editor":"color","default":"#2BA383","options":["#2BA383","#52A385","#1A6B55"]},"sun":{"editor":"color","default":"#F7C548"},"showStats":{"editor":"boolean","default":false},"showSupport":{"editor":"boolean","default":false},"showCompanies":{"editor":"boolean","default":false},"$preview":{"width":1440,"height":6400}}'>
+<script type="text/x-dc" data-dc-script data-props='{"brand":{"editor":"color","default":"#2BA383","options":["#2BA383","#52A385","#1A6B55"]},"sun":{"editor":"color","default":"#F7C548"},"showStats":{"editor":"boolean","default":false},"showSupport":{"editor":"boolean","default":false},"showLogin":{"editor":"boolean","default":false},"showCompanies":{"editor":"boolean","default":false},"$preview":{"width":1440,"height":6400}}'>
 class Component extends DCLogic {
   constructor(props) {
     super(props);
-    this.state = { tab: 'employers' };
+    this.state = { tab: 'employers', menuOpen: false };
   }
   renderVals() {
     var self = this;
     var tab = this.state.tab;
     var defs = [
-      { id: 'employers', label: 'For employers' },
-      { id: 'employees', label: 'For employees' },
-      { id: 'restaurants', label: 'For restaurants' }
+      { id: 'employers', label: 'Employers' },
+      { id: 'employees', label: 'Employees' },
+      { id: 'restaurants', label: 'Restaurants' }
     ];
-    var base = 'border: 0; cursor: pointer; font-family: inherit; font-size: 15px; font-weight: 700; padding: 12px 22px; min-height: 44px; border-radius: 999px; ';
     return {
       brand: this.props.brand ?? '#2BA383',
       sun: this.props.sun ?? '#F7C548',
       showStats: this.props.showStats ?? false,
       showSupport: this.props.showSupport ?? false,
+      showLogin: this.props.showLogin ?? false,
       showCompanies: this.props.showCompanies ?? false,
+      menuOpen: this.state.menuOpen,
+      menuExpanded: this.state.menuOpen ? 'true' : 'false',
+      toggleMenu: function () { self.setState({ menuOpen: !self.state.menuOpen }); },
+      closeMenu: function () { self.setState({ menuOpen: false }); },
       isEmployers: tab === 'employers',
       isEmployees: tab === 'employees',
       isRestaurants: tab === 'restaurants',
@@ -416,7 +622,7 @@ class Component extends DCLogic {
         return {
           label: d.label,
           selected: on ? 'true' : 'false',
-          style: base + (on ? 'background: #10241D; color: #FFFFFF;' : 'background: transparent; color: #10241D;'),
+          style: on ? 'background: #10241D; color: #FFFFFF;' : 'background: transparent; color: #10241D;',
           pick: function () { self.setState({ tab: d.id }); }
         };
       })
