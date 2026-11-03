@@ -52,7 +52,4 @@
               <rect x="14" y="153" width="55" height="6" rx="3" fill="#f1f5f9" />
             </g>
 
-            <!-- Hand Holding Phone (Stylized Vector) -->
-            <path d="M 40 180 C 50 140, 75 130, 85 135 C 92 138, 95 148, 88 160 C 82 170, 70 210, 70 220 L 20 220 Z" fill="#e5c3b2" />
-            <path d="M 82 130 C 95 125, 112 140, 105 155 C 100 162, 85 170, 75 185" fill="none" stroke="#d4a38e" stroke-width="3" stroke-linecap="round" />
           </svg>
